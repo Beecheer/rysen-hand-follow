@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "device_ip": "192.168.0.102",
+  "sdk_version": "1.4.7",
+  "firmware_version": "3.2.8",
+  "margin_deg": 2,
+  "bounds": {"left_thumb_j1": [-0.1745, 0.53]},
+  "evidence": "2026-10-18 SDK MoveJPositionFollow log: joint 1 clamped to 0.5299999999999999 rad. This conservative override supplements the URDF; it is not a full device limit calibration."
+}

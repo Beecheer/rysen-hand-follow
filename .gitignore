@@ -1,0 +1,22 @@
+# Local Python environments, runtimes and caches
+.uv-cache/
+.venv/
+.python/
+.hf-cache/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+node_modules/
+
+# Downloaded system image and incomplete downloads
+/rysen_system_image.tar
+*.part
+*.tmp
+
+# Local credentials; keep shareable examples
+.env
+.env.*
+!.env.example
+!.env.sample

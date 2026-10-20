@@ -1,0 +1,3 @@
+[submodule "rysen-explorer"]
+	path = rysen-explorer
+	url = https://github.com/RysenRobotics/rysen-explorer.git

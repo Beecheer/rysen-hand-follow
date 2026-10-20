@@ -1,0 +1,210 @@
+{
+  "repository": "https://github.com/RysenRobotics/apex-hand-urdf",
+  "commit": "3f482caadf61c91e71df6be9e33e2122da768637",
+  "files": {
+    "apex_hand_left.urdf": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/apex_hand_left.urdf",
+      "sha256": "450f816c842c6ac82f1a2e8162c6ca42c0918f701a575abf8e7b24fce5dd124d"
+    },
+    "meshes/left_index_link0.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_index_link0.STL",
+      "sha256": "2307226e2a73130b4c2f92a7f1b95c7fbc006c91e291fe22e1ae0d1a38120875"
+    },
+    "meshes/left_index_link1.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_index_link1.STL",
+      "sha256": "bcba491fe6971ace369a6891af4c23e31637e2b479770b6f445bf09ca649fb16"
+    },
+    "meshes/left_index_link2.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_index_link2.STL",
+      "sha256": "08bd3c2241e0f9567ebba2f15818df71f55784618bc45e14a4adae3b296f4f94"
+    },
+    "meshes/left_index_link3.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_index_link3.STL",
+      "sha256": "05ef0b8577fdf5a078d188cb18f06b5ae8dd51f22c284b761d22bca4b56fb33c"
+    },
+    "meshes/left_index_pad.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_index_pad.STL",
+      "sha256": "0514ba11ab2eaab9721a7c57c8280656c83d4aa4ccd6f5b41d8d7bc91aca0577"
+    },
+    "meshes/left_index_tactile0.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_index_tactile0.STL",
+      "sha256": "72f79a4bea50c5c970fb733879ef74c25a3ca99cf1a9eabfe6168a95a296da21"
+    },
+    "meshes/left_index_tactile1.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_index_tactile1.STL",
+      "sha256": "8c776845c743accb7b2416aa4232ba27e6d095278c833a96b369954d0a553ba1"
+    },
+    "meshes/left_index_tactile2.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_index_tactile2.STL",
+      "sha256": "a26d92fff9b6c20035cadc42dfe08a91a2625a96fe5ce27854f64ded44b851fa"
+    },
+    "meshes/left_index_tip.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_index_tip.STL",
+      "sha256": "fa8319c17d47ad6de0bfe0da954dffff6ac5c849d8840e3ce2c822e9e6162309"
+    },
+    "meshes/left_middle_link0.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_middle_link0.STL",
+      "sha256": "2630915355a8606cd977cea610db9c499004fc682ecd7e47492ab95f64259df4"
+    },
+    "meshes/left_middle_link1.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_middle_link1.STL",
+      "sha256": "db7b6897b071d61d7e6024454e6aa8fad805ed27e98f47e558f6027769bfe9f9"
+    },
+    "meshes/left_middle_link2.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_middle_link2.STL",
+      "sha256": "cc8b8a9d7c56b0d34c05433ca5626ced9c99b20df22b3a58d2cd9175b1db7e20"
+    },
+    "meshes/left_middle_link3.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_middle_link3.STL",
+      "sha256": "a13e2aabbdf856bf9c2e62cabf0d073ce0ffb3b302ff127d2642de13f6a22ba4"
+    },
+    "meshes/left_middle_pad.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_middle_pad.STL",
+      "sha256": "486a30d06f19b33d4ea66e15647ec28b9bcd5b5f0fe54c2518e2881eac6a0d05"
+    },
+    "meshes/left_middle_tactile0.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_middle_tactile0.STL",
+      "sha256": "b5ab8d682b2b816c0b7cb2ead0464fd58ecaca677c703f78d51de9c764d81463"
+    },
+    "meshes/left_middle_tactile1.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_middle_tactile1.STL",
+      "sha256": "1ec3b9dd98af63aad8797be7b9a666c3350ea2adb169c51fd4fd0f8f1af4f733"
+    },
+    "meshes/left_middle_tactile2.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_middle_tactile2.STL",
+      "sha256": "60a167b3b39b5c5232ab2a7028e84b5cfdfaa6ee123f1991091fa698faff2930"
+    },
+    "meshes/left_middle_tip.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_middle_tip.STL",
+      "sha256": "d5d61702d60a685259449524624c3d6d66479c86369640480bc33fbbfffb1ee3"
+    },
+    "meshes/left_palm_base.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_palm_base.STL",
+      "sha256": "41baf32a5cdaff36952ee9c9cc5886bf5ca64e3053daa668383ef58ad0ba1fbf"
+    },
+    "meshes/left_palm_link.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_palm_link.STL",
+      "sha256": "8e7fbf78d4a5c6ab441d1e42a113340dcaa17cbfb057f1867303eb536cdcd262"
+    },
+    "meshes/left_palm_tactile.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_palm_tactile.STL",
+      "sha256": "e23bae6c935c4d98afce535ecde3a8679f4a7d5d7d93cacf1444864ffcef733d"
+    },
+    "meshes/left_pinky_link0.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_pinky_link0.STL",
+      "sha256": "d19f67cd4a862cf81e27667004e5a97b098659e3530c7ba616dcd6d1129e1432"
+    },
+    "meshes/left_pinky_link1.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_pinky_link1.STL",
+      "sha256": "e0d16fe3a33a28fd874e2092969b08f89da5d5cc9d0c36a93b742febc2b01ca3"
+    },
+    "meshes/left_pinky_link2.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_pinky_link2.STL",
+      "sha256": "ccee6479867a38201cbeeaa2833ae077f5f3dc5613d437b523254af5a861044f"
+    },
+    "meshes/left_pinky_link3.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_pinky_link3.STL",
+      "sha256": "b5b47d43c6b13c211020d85fc490fcec5188bf414e77dcc96848dfa0626cca6a"
+    },
+    "meshes/left_pinky_pad.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_pinky_pad.STL",
+      "sha256": "7fb66ace1cd8426abea0cfb68f1d720e341ae00b2c7a49dcaaf2be7f691fc261"
+    },
+    "meshes/left_pinky_tactile0.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_pinky_tactile0.STL",
+      "sha256": "9be7868b8d83750814abc750348790f5499eb63851365182994a877b0d22967a"
+    },
+    "meshes/left_pinky_tactile1.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_pinky_tactile1.STL",
+      "sha256": "03d2e145cde377bd18ac56dd895b461463a15be054eb0454b7492b19858227da"
+    },
+    "meshes/left_pinky_tactile2.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_pinky_tactile2.STL",
+      "sha256": "4f9d4da2163f1ca1a942b28f78973a0ffa8f8f5c687f0e45611720ec1447a586"
+    },
+    "meshes/left_pinky_tip.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_pinky_tip.STL",
+      "sha256": "e1c5601177dacd3deca5096b8f765c02e6cbea80919db081d94a70f690df39c4"
+    },
+    "meshes/left_ring_link0.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_ring_link0.STL",
+      "sha256": "87117179c0c0efd78571037b561a6f6d0fc082e1333ac0b623bc47888be4a0b8"
+    },
+    "meshes/left_ring_link1.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_ring_link1.STL",
+      "sha256": "c3a493c553d99fa0db240eb63e56a16adf0a837b439f78577cfbfd4cc4a7f9ef"
+    },
+    "meshes/left_ring_link2.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_ring_link2.STL",
+      "sha256": "a374b296d2ba52a50906313b1a565099d5ba07978931d073f9019271ad6b52cc"
+    },
+    "meshes/left_ring_link3.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_ring_link3.STL",
+      "sha256": "ddb10270053a498441b6e46e36ee2299880ac48356bc35760d645bce0786eccd"
+    },
+    "meshes/left_ring_pad.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_ring_pad.STL",
+      "sha256": "f60ebb155e5d4c16015543cec14ae82a3e60a61989f7f9e3f5a2182b8362616e"
+    },
+    "meshes/left_ring_tactile0.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_ring_tactile0.STL",
+      "sha256": "b567b73144cc2fadac5ca8b9f28d742870d6c2ee710f206e8cc1caaeb5a7c002"
+    },
+    "meshes/left_ring_tactile1.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_ring_tactile1.STL",
+      "sha256": "0b23931706b25c3280ed78c4660ab80b5e92e323df7e72b8ba75d7c405a22da5"
+    },
+    "meshes/left_ring_tactile2.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_ring_tactile2.STL",
+      "sha256": "da5d6420137c1b71e37033371b7f0bfd06cea563bcaff6a286725170c56a125e"
+    },
+    "meshes/left_ring_tip.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_ring_tip.STL",
+      "sha256": "6617fb1dfc882e0c0299967c4b6ab087a1a0da2c3a8b7bcd1a45cd579f947ac1"
+    },
+    "meshes/left_thumb_link0.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_thumb_link0.STL",
+      "sha256": "7d644bf609ed2814fcec8ef1dc32f4d8f0fe8661c58daf18fc1048875096a98b"
+    },
+    "meshes/left_thumb_link1.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_thumb_link1.STL",
+      "sha256": "abdac070d564918e504f590c01b88b43c8690bace88ce5f6ad14f06591d664f8"
+    },
+    "meshes/left_thumb_link2.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_thumb_link2.STL",
+      "sha256": "594f3bad880510d80aa83467dc046693a0005690796b3100e9d704e3d5e78fa1"
+    },
+    "meshes/left_thumb_link3.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_thumb_link3.STL",
+      "sha256": "e46cc7668a7cc75277d24e452d1c990e6e5cd47e2622929173514876b5398758"
+    },
+    "meshes/left_thumb_link4.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_thumb_link4.STL",
+      "sha256": "2ef483daacb2212cc00a65078244edd73ad7de4409aff2218ff73a0bed3c8714"
+    },
+    "meshes/left_thumb_pad.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_thumb_pad.STL",
+      "sha256": "351f6ea2fdbbdd94af9319ad551e0a7e9122c5f1c4a414304a247be1835dda84"
+    },
+    "meshes/left_thumb_tactile0.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_thumb_tactile0.STL",
+      "sha256": "f99794c4e32c3cd80f1e51d3577129d63f19081639af1c1db39adec30156e5dc"
+    },
+    "meshes/left_thumb_tactile1.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_thumb_tactile1.STL",
+      "sha256": "944be172530b0c9053bba10b50a04f334971031f50070328565a8c3ed03edb6d"
+    },
+    "meshes/left_thumb_tactile2.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_thumb_tactile2.STL",
+      "sha256": "5ac37fc2860d500f87628e9f69e1df1b489f7b7f6b003042ec7e46f3c13327b9"
+    },
+    "meshes/left_thumb_tip.STL": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/apex_hand_left/meshes/left_thumb_tip.STL",
+      "sha256": "db9a1653fc3954328d61231e67d188ec704707674382f0f16d0d2805926488a7"
+    },
+    "LICENSE": {
+      "url": "https://raw.githubusercontent.com/RysenRobotics/apex-hand-urdf/3f482caadf61c91e71df6be9e33e2122da768637/LICENSE",
+      "sha256": "6b2871cfb6892208ca8b59dfa67116e99795adafe87dedb2be784ee088eb9332"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+[project]
+name = "rysen-wilor-backend"
+version = "0.1.0"
+requires-python = ">=3.10,<3.11"
+dependencies = [
+  "torch==2.5.0", "torchvision==0.20.0", "numpy==1.26.4",
+  "wilor-mini", "fastapi>=0.115,<1", "uvicorn>=0.30,<1",
+  "setuptools<81", "huggingface-hub<1",
+  "dill>=0.3.8,<0.5",
+]
+
+[tool.uv.sources]
+torch = { path = "wheels/torch-2.5.0+cu121-cp310-cp310-win_amd64.whl" }
+torchvision = { index = "pytorch" }
+wilor-mini = { git = "https://github.com/warmshao/WiLoR-mini.git", rev = "ebec42f94c389070cdd7dda6fd1bf0b4a659c960" }
+
+[[tool.uv.index]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cu121"
+explicit = true
+
+[tool.uv]
+package = false
+
+[tool.uv.extra-build-dependencies]
+chumpy = ["pip", "setuptools<81"]

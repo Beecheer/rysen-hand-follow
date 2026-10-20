@@ -1,0 +1,26 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const source=fs.readFileSync(require('node:path').join(__dirname,'../web/main.js'),'utf8');
+const elements=new Map();
+function $(id){if(!elements.has(id))elements.set(id,{textContent:'',value:'neutral',disabled:false,replaceChildren(...children){this.children=children;}});return elements.get(id);}
+const context={$ ,document:{createElement(){return {};},querySelector(){return $('caution');}}};
+vm.createContext(context);
+const start=source.indexOf('const calNames=');const end=source.indexOf('const degree =');
+vm.runInContext(source.slice(start,end),context);
+const cal={schema:4,poses:['neutral','together'],enabled:false,has_profile:false,samples:{},collecting:null,message:'两步',ready:false,capture_seconds:4};
+context.updateCalibration(cal,{});
+assert.equal($('calPose').children.length,2);assert.equal($('calSteps').children.length,2);
+assert.match($('calInstruction').textContent,/略分开/);assert.match($('calTitle').textContent,/两步/);
+cal.samples.neutral={valid_frames:40};context.updateCalibration(cal,{});
+assert.equal($('calPose').value,'together');assert.match($('calInstruction').textContent,/并拢/);
+assert.equal($('calProgress').value,.5);
+cal.collecting='together';cal.valid_frames=10;cal.phase='sample';cal.progress=.4;cal.rejections={'掌面偏转':8};
+context.updateCalibration(cal,{});assert.match($('calMessage').textContent,/掌面偏转/);assert.equal($('resume').disabled,true);
+cal.collecting=null;cal.samples.together={valid_frames:40};cal.ready=true;
+context.updateCalibration(cal,{});assert.equal($('calProgress').value,1);assert.equal($('calApply').disabled,false);
+const thumbStart=source.indexOf('const thumbCalNames=');const thumbEnd=source.indexOf('for(const [id,name] of Object.entries({thumbCalCapture:');
+vm.runInContext(source.slice(thumbStart,thumbEnd),context);
+context.updateThumbCalibration({available:false},{calibration:{collecting:null}});
+assert.equal($('thumbCalibrationPanel').hidden,true);
+cal.schema=3;cal.samples={};context.updateCalibration(cal,{});
+assert.equal($('calPose').children.length,8);assert.match($('calTitle').textContent,/八姿态/);
+console.log('PASS: two-pose calibration, rejection, next step, no thumb specialty, legacy UI preserved.');

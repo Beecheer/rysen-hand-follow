@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>D435 · 基础深度预览</title><style>
+*{box-sizing:border-box}body{margin:0;background:#101821;color:#deebf5;font:15px/1.6 system-ui,sans-serif}main{max-width:1320px;margin:auto;padding:24px}h1{font-size:25px;margin:0}small,p{color:#adc0d2}.bar,.metrics{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:18px 0}.card{background:#192734;border:1px solid #334656;border-radius:10px;padding:18px;margin:16px 0}button,input{font:inherit;padding:8px 12px;border:1px solid #486171;border-radius:6px;background:#253b4c;color:#e6f3ff}button{cursor:pointer}button:hover{background:#35566a}button.primary{background:#226d6d}input{width:90px}.views{display:flex;justify-content:space-around;font-weight:600}.image{display:block;width:100%;aspect-ratio:8/3;background:#080d12;cursor:crosshair;object-fit:contain}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:13px/1.7 ui-monospace,monospace}.metric{min-width:160px}.metric strong{display:block;font-size:21px;color:#80dac9}#message{color:#ffd68b}a{color:#80dac9}footer{font-size:13px;color:#8fa6ba;margin:24px 0}
+</style></head><body><main>
+<h1 id="title">RealSense D435 · 彩色与深度</h1><small id="subtitle">独立相机诊断 · 不连接机械手</small>
+<div class="bar"><button class="primary" id="resume">恢复 / 重试相机</button><button id="pause">暂停并释放相机</button><button id="capture">保存当前 RGB＋原始深度</button><button id="stop">停止服务</button></div>
+<div id="message" role="status">正在连接本机相机服务…</div>
+<section class="card"><div class="views"><span>RGB 彩色图</span><span>对齐到 RGB 的深度图</span></div><img class="image" id="video" src="/video" alt="左侧彩色图，右侧深度图，点击任意位置测距"><div class="bar"><label>伪彩近端 m <input id="near" type="number" value="0.2" min="0.01" step="0.1"></label><label>远端 m <input id="far" type="number" value="1.5" min="0.02" step="0.1"></label><button id="range">更新显示范围</button></div><small>近处偏蓝、远处偏红；黑色为无效深度。显示范围只影响配色，不修改原始深度或筛除测距数据。</small></section>
+<section class="card" id="handPanel" hidden>
+<h2>MediaPipe ＋ 逐指深度约束</h2>
+<p id="handMessage" role="status">等待手部识别…</p>
+<div class="bar"><button id="handReset">重新建立骨长参考</button><button id="handSwap">切换左右手标签</button></div>
+<p>先将完整手掌正对相机，在约 0.4–0.8 米处自然展开，保持约 30 个有效帧。换操作者后重新建立参考。绿色点有可靠表面深度约束，黄色点依赖模型估计；深度缺失不会填固定距离。</p>
+<div class="metrics"><div class="metric"><strong id="handDepth">—</strong>深度约束点 / 21</div><div class="metric"><strong id="handBone">—</strong>骨长残差 P95</div><div class="metric"><strong id="handFrames">—</strong>骨长参考帧 / 30</div><div class="metric"><strong id="handTime">—</strong>识别＋融合耗时</div></div>
+<div style="display:flex;flex-wrap:wrap;gap:16px"><div style="flex:1;min-width:260px"><b>RGB 模型推断（尺度 / 位置对齐）</b><canvas id="modelCanvas" width="560" height="360" style="width:100%;background:#0e1720;touch-action:none"></canvas></div><div style="flex:1;min-width:260px"><b>逐指深度约束结果</b><canvas id="fusedCanvas" width="560" height="360" style="width:100%;background:#0e1720;touch-action:none"></canvas></div></div>
+<small>拖动骨架可同步旋转视角；两图以腕部为原点、使用相同比例。深度测量皮肤表面，绿色不代表关节中心已被直接测量。</small>
+<div style="overflow:auto"><table style="width:100%;text-align:left"><thead><tr><th>手指</th><th>RGB 模型估计 °</th><th>深度约束估计 °</th></tr></thead><tbody id="angleRows"></tbody></table></div>
+<p>四指顺序：侧摆 / MCP 屈伸 / PIP / DIP；拇指：掌面方向 / 离掌抬起 / MCP / IP。角度是骨架几何估计，没有个人零位标定，不作为机械手控制指令。遮挡时仍可能估错。</p>
+</section>
+<section class="card"><div class="metrics"><div class="metric"><strong id="fps">—</strong>采集 / 处理 FPS</div><div class="metric"><strong id="valid">—</strong>全画面有效深度</div><div class="metric"><strong id="inrange">—</strong>显示范围内占比</div><div class="metric"><strong id="age">—</strong>最近帧年龄</div></div><p id="device">等待设备信息</p><details><summary>相机内参和同步信息</summary><pre id="intrinsics"></pre></details></section>
+<section class="card"><h2>点击测距</h2><p>点击左图或右图，在同一对齐像素上测量。原始 Z 是沿相机光轴的距离；XYZ 为该原像素的三维表面点。不是手关节中心，也不是到相机的径向距离。</p><pre id="measurement">点击图像选择像素。</pre><p>周围 5×5 像素仅对非零深度求中位数和标准差。靠近轮廓时可能混入背景；邻域中位数不用于补造原像素 XYZ。</p></section>
+<section class="card"><h2>基础使用</h2><p>让手或物体完整进入画面，先在约 0.4–0.8 米处试测。用平整、不透明的表面检查距离和深度连续性。先避开指尖轮廓、反光物和遮挡处；实际可用距离要以当前深度图为准。</p><p id="capturePath">默认不录制、不保存画面。保存按钮会在本机 captures 中写入彩色 PNG、16 位深度 PNG 和尺度/内参 JSON。</p></section>
+<footer>关闭网页不会自动停止服务。结束使用请点击“停止服务”，或运行工作区的 Stop-DepthCamera.cmd。暂停会释放设备，恢复可在重新插拔后重试。</footer>
+
+</main><script>
+const $=id=>document.getElementById(id);let stopped=false,polling=false;
+const chains=[[0,1,2,3,4],[0,5,6,7,8],[0,9,10,11,12],[0,13,14,15,16],[0,17,18,19,20]];
+let viewYaw=0,viewPitch=-.3,lastHand=null;
+function skeleton(id,points,sources){
+ const canvas=$(id),ctx=canvas.getContext('2d');ctx.clearRect(0,0,canvas.width,canvas.height);
+ if(!points){ctx.fillStyle='#9eb2c3';ctx.fillText('等待有效三维骨架',20,35);return;}
+ const root=points[0],cy=Math.cos(viewYaw),sy=Math.sin(viewYaw),cp=Math.cos(viewPitch),sp=Math.sin(viewPitch);
+ const project=p=>{const x=p[0]-root[0],y=p[1]-root[1],z=p[2]-root[2];const rx=x*cy+z*sy,rz=-x*sy+z*cy;return [280+rx*1600,280+(y*cp-rz*sp)*1600];};
+ const xy=points.map(project);ctx.lineWidth=3;ctx.strokeStyle='#718fa5';
+ for(const chain of chains){ctx.beginPath();chain.forEach((i,j)=>ctx[j?'lineTo':'moveTo'](...xy[i]));ctx.stroke();}
+ xy.forEach((p,i)=>{ctx.beginPath();ctx.arc(...p,4,0,2*Math.PI);ctx.fillStyle=sources?.[i]==='depth_band'?'#7ce650':'#ffbe28';ctx.fill();});
+}
+function redraw(){skeleton('modelCanvas',lastHand?.model_points_m);skeleton('fusedCanvas',lastHand?.fused_points_m,lastHand?.sources);}
+for(const id of ['modelCanvas','fusedCanvas']){
+ let drag=null;$(id).onpointerdown=e=>{drag=[e.clientX,e.clientY];$(id).setPointerCapture(e.pointerId);};
+ $(id).onpointermove=e=>{if(!drag)return;viewYaw+=(e.clientX-drag[0])*.01;viewPitch+=(e.clientY-drag[1])*.01;drag=[e.clientX,e.clientY];redraw();};
+ $(id).onpointerup=$(id).onpointercancel=()=>{drag=null;};
+}
+for(const [id,name] of [['handReset','hand-reset'],['handSwap','hand-swap']])$(id).onclick=async()=>{try{await action(name);}catch(error){$('handMessage').textContent=error.message;}};
+function updateHand(report){
+ $('handPanel').hidden=!report?.enabled;if(!report?.enabled)return;
+ document.title='D435 · 逐指深度约束';$('title').textContent='D435 · MediaPipe ＋ 逐指深度约束';$('subtitle').textContent='识别对照预览 · 不连接机械手';
+ lastHand=report.hands?.[0]||null;
+ $('handMessage').textContent=[report.state,lastHand?.label,report.message].filter(Boolean).join(' · ');
+ $('handDepth').textContent=lastHand?.quality?.depth_constraints??'—';
+ $('handBone').textContent=lastHand?.quality?lastHand.quality.bone_error_p95_mm.toFixed(1)+' mm':'—';
+ $('handFrames').textContent=lastHand?.bone_reference_frames??'—';$('handTime').textContent=report.processing_ms==null?'—':report.processing_ms.toFixed(0)+' ms';
+ $('handSwap').textContent='左右手标签互换：'+(report.swap_handedness?'开':'关');
+ $('angleRows').replaceChildren();const names={thumb:'拇指',index:'食指',middle:'中指',ring:'无名指',pinky:'小指'};
+ for(const name of Object.keys(names)){
+  const row=document.createElement('tr');for(const value of [names[name],...['model_angles_deg','fused_angles_deg'].map(key=>lastHand?.[key]?.[name]?Object.values(lastHand[key][name]).map(v=>v.toFixed(1)).join(' / '):'—')]){const cell=document.createElement('td');cell.textContent=value;row.append(cell);}$('angleRows').append(row);
+ }redraw();
+}
+async function action(name,body={}){
+ const r=await fetch('/api/'+name,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+ const data=await r.json();if(!r.ok)throw Error(data.detail||'操作失败');return data;
+}
+for(const name of ['pause','resume','stop','capture'])$(name).onclick=async()=>{
+ try{const data=await action(name);if(name==='stop'){stopped=true;$('video').removeAttribute('src');$('message').textContent='服务停止请求已发送。';}
+ if(name==='capture')$('capturePath').textContent='已保存：'+data.path;
+ }catch(error){$('message').textContent=error.message;}
+};
+$('range').onclick=async()=>{try{await action('range',{near:Number($('near').value),far:Number($('far').value)});}catch(error){$('message').textContent=error.message;}};
+$('video').onclick=async event=>{
+ const box=event.currentTarget.getBoundingClientRect();let x=Math.floor((event.clientX-box.left)/box.width*1280),y=Math.floor((event.clientY-box.top)/box.height*480);
+ if(x>=640)x-=640;x=Math.max(0,Math.min(639,x));y=Math.max(0,Math.min(479,y));
+ try{await action('select',{x,y});await update();}catch(error){$('message').textContent=error.message;}
+};
+const mm=value=>value===null?'无效':(value*1000).toFixed(1)+' mm';
+async function update(){
+ if(stopped||polling)return;polling=true;
+ try{
+ const r=await fetch('/api/status',{cache:'no-store'});if(!r.ok)throw Error('读取状态失败');const s=await r.json();
+ updateHand(s.hand_tracking);
+ $('message').textContent=s.error?`相机异常：${s.error}。检查 USB / 其他相机程序后点“恢复 / 重试相机”。`:({STARTING:'正在启动相机…',RUNNING:'相机运行中 · 点击图像测距',PAUSED:'已暂停，相机设备已请求释放',STOPPED:'相机已停止'}[s.state]||s.state);
+ $('fps').textContent=s.fps.toFixed(1);$('valid').textContent=(s.valid_ratio*100).toFixed(1)+'%';$('inrange').textContent=(s.in_range_ratio*100).toFixed(1)+'%';$('age').textContent=s.age_ms===null?'—':s.age_ms.toFixed(0)+' ms';
+ if(s.device)$('device').textContent=`${s.device.name} · USB ${s.device.usb||'未知'} · 固件 ${s.device.firmware} · 请求 ${s.stream_fps} FPS · 深度尺度 ${s.depth_scale_m??'—'} m/单位`+(s.device.usb?.startsWith('2')?' · 当前为 USB 2，请优先换 USB 3 数据线和接口。':'');
+ $('intrinsics').textContent=JSON.stringify({intrinsics:s.intrinsics,timestamp_skew_ms:s.timestamp_skew_ms},null,2);
+ if(s.measurement){const m=s.measurement;$('measurement').textContent=`像素 (${m.pixel.join(', ')}) · 帧 #${m.frame_id}\n原像素 Z：${mm(m.raw_z_m)}\n邻域中位 Z：${mm(m.patch_z_m)}\n邻域有效比例：${(m.patch_valid_ratio*100).toFixed(0)}%\n邻域标准差：${m.patch_std_mm===null?'无效':m.patch_std_mm.toFixed(2)+' mm'}\n原像素 XYZ：${m.xyz_m?m.xyz_m.map(mm).join(', '):'原像素无效，不生成三维点'}`;}
+ if(s.last_capture)$('capturePath').textContent='最近保存：'+s.last_capture;
+ }catch(error){$('message').textContent='服务未连接：'+error.message;lastHand=null;redraw();}finally{polling=false;}
+}
+setInterval(update,150);update();
+</script></body></html>

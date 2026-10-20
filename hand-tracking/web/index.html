@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Apex 左手 · 姿态映射预览</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="/static/thumb-calibration.css">
+  <link rel="stylesheet" href="/static/depth.css">
+  <script type="importmap">{"imports":{"three":"/static/vendor/three/build/three.module.js","three/":"/static/vendor/three/"}}</script>
+</head>
+<body>
+  <header><div><span class="eyebrow">APEX HAND / VISION LAB</span><h1 id="workspaceTitle">左手姿态映射 <span>预览</span></h1></div><div class="header-right"><span class="badge" id="runtimeModeBadge">仅模型 · 未连接真机</span><button id="stop" class="quiet">停止服务</button></div></header>
+  <main>
+    <section class="panel" id="sideZeroPanel" hidden><div class="panel-head"><h2>四指侧摆 · 快速归零</h2></div><div class="cal-body"><p>掌心朝前，四指自然并拢伸直，手腕和指根完整入镜。准备 1 秒、采样 7 秒，同时校正两路侧摆零位；拇指及屈伸配置保留。</p><div class="cal-actions"><button id="sideZeroCapture">采集四指并拢零位</button><button id="sideZeroApply" disabled>应用侧摆零位并保存</button></div><p id="sideZeroMessage">未配对零位时，深度不参与侧摆修正。</p></div></section>
+    <section class="workspace" id="cameraWorkspace">
+      <article class="panel camera-panel"><div class="panel-head"><h2>摄像头与关键点</h2><span id="cameraMode">本机处理</span></div><div class="camera-wrap"><img id="camera" src="/video" alt="摄像头关键点预览"><div class="camera-note">举起左手，完整入镜</div></div><div class="camera-actions"><button id="mirror">镜像：开</button><button id="swap">左右手校正：关</button><span>标签应与实际左手一致</span></div><div class="metrics"><div><strong id="fps">—</strong><span>处理 FPS</span></div><div><strong id="inference">—</strong><span>推理 ms</span></div><div><strong id="age">—</strong><span>有效数据年龄 ms</span></div></div></article>
+      <article class="panel depth-camera-panel" id="depthCameraPanel" hidden><div class="panel-head"><h2>深度画面 · D435</h2><span id="depthCameraState">等待深度帧</span></div><div class="camera-wrap"><img id="depthCamera" alt="D435 对齐 RGB 的深度伪彩画面"><div class="camera-note">黑色区域：无有效深度</div></div><div class="footnote"><div class="depth-color-legend" aria-hidden="true"></div><div class="depth-range"><span id="depthNear">近</span><span id="depthFar">远</span></div><p>与 RGB 使用同一帧、同一视角和镜像方向。颜色表示距离，不表示识别置信度。</p></div></article>
+      <article class="panel model-panel"><div class="panel-head"><h2>ApexHand 左手目标姿态</h2><button id="toggleModel" class="quiet" aria-pressed="true">三维预览：开</button><button id="resetView" class="quiet">恢复视角</button></div><div id="viewer"><div id="modelMessage">正在加载官方左手模型…</div><span class="viewer-label" id="modelPoseMode">URDF · LEFT</span><span class="viewer-hint">拖动旋转 · 滚轮缩放 · 右键平移</span></div></article>
+    </section>
+    <section class="panel" id="comparisonPanel" hidden>
+      <div class="panel-head"><h2>A / B · 人手识别对照</h2><select id="previewBackend" aria-label="预览识别后端"><option value="mediapipe">A · MediaPipe + 个人结构</option><option value="wilor">B · WiLoR</option></select></div>
+      <div class="cal-body"><p id="comparisonStatus">等待 WiLoR 后端</p><p>下方骨架来自同一源帧。拖动可旋转；骨架按掌长归一化，不代表真实尺寸。后端选择影响机械手预览、角度表及标定面板，本模式不连接 SDK。</p><div class="comparison-grid"><div><strong>A · MediaPipe 人手骨架</strong><div id="skeletonA" class="skeleton-view"></div></div><div><strong>B · WiLoR 人手骨架</strong><div id="skeletonB" class="skeleton-view"></div></div></div><p id="comparisonTiming"></p><p id="comparisonCalibration">B 使用独立个人配置；初次可先对比未标定效果，再采集八姿态。</p><div class="cal-actions"><button id="recordComparison">录制 15 秒测试视频</button><button id="stopRecording">结束录制</button></div><p id="recordingStatus">仅点击录制后才保存原始摄像头画面到本机 logs；默认不录制。</p></div>
+    </section>
+    <section class="panel" id="depthPanel" hidden><div class="panel-head"><h2>D435 · RGB 骨架＋深度根部修正</h2><span id="depthMode">等待相机</span></div><div class="cal-body"><p id="depthStatus"></p><p id="depthGate"></p><p>左侧视频为 RGB，右侧为对齐深度。绿色点仅表示深度邻域通过筛选，不代表该点未被遮挡，也不是直接测得关节中心。先在约 0.4–0.8 米处掌心朝前，完成下方两步骨架标定。</p><div class="comparison-grid"><div><b>RGB 模型推断（对照）</b><canvas id="depthModel" width="480" height="320" style="width:100%;background:#101c2b;touch-action:none"></canvas></div><div><b>RGB 姿态／个人骨长显示（拇指指尖深度）</b><canvas id="depthFused" width="480" height="320" style="width:100%;background:#101c2b;touch-action:none"></canvas></div></div><p>拖动同步旋转，腕部为原点、同一比例。第一步保存骨长，第二步保存并拢侧摆零位。掌部深度持续缺失超过 250 ms 时不再更新目标；完整遮挡下的姿态仍属于模型推断。</p><p id="depthPerFinger"></p></div></section>
+    <section class="panel status-panel"><div><span id="status" class="status">准备中</span><p id="reason">等待摄像头和模型</p></div><div class="status-actions"><button id="pause">暂停跟随</button><button id="resume" class="primary">恢复 / 重新捕获</button></div></section>
+    <section class="panel" id="indexFollowPanel" hidden>
+      <div class="panel-head"><h2 id="followTitle">食指摄像头跟随 · 真机</h2><span id="followRange">仅 MCP · 0–10°</span></div>
+      <div class="cal-body"><p id="indexFollowStatus">设备未使能</p>
+      <div class="cal-actions"><button id="indexFollowStart" class="primary">开始食指跟随</button><button id="indexFollowStop">暂停并失能</button></div>
+      <p class="footnote" id="followInstructions">先恢复识别并举起左手，再开始。人手 0–65° 映射到真机 0–10°；其余四指不使能。丢手、页面心跳中断或反馈超时会暂停并失能；每次最多 30 秒，需手动重新开始。停止不自动回零。</p></div>
+    </section>
+    <section class="panel hardware-panel" id="hardwarePanel" hidden>
+      <div class="panel-head"><h2>SDK 反馈与目标对照</h2><span id="hardwareMode">只读 · 模拟发送</span></div>
+      <div class="cal-body"><p id="hardwareSummary">等待只读桥</p><p id="hardwareReason"></p></div>
+      <div style="overflow-x:auto"><table><thead><tr><th>SDK ID / 关节</th><th>预览目标 °</th><th id="hardwareCommandHeader">模拟命令 °</th><th>实际反馈 °</th></tr></thead><tbody id="hardwareAngles"></tbody></table></div>
+      <div class="footnote" id="hardwareFootnote">模拟命令仅显示和记录，不会发送；SDK 断开时可能失能。</div>
+    </section>
+    <section class="panel calibration-panel">
+      <div class="panel-head"><h2 id="calTitle">掌心朝前 · 八姿态个人标定</h2><span id="calMode">未标定模式</span></div>
+      <div class="cal-body"><div class="cal-guide"><label for="calPose">采集姿态</label><select id="calPose"><option value="neutral">1 · 中立位</option><option value="spread">2 · 四指舒适张开</option><option value="hook">3 · 钩手</option><option value="mcp">4 · 指根轻弯、指间较直</option><option value="index">5 · 拇指碰食指尖</option><option value="middle">6 · 拇指碰中指尖</option><option value="ring">7 · 拇指碰无名指尖</option><option value="pinky">8 · 拇指碰小指尖</option></select><p id="calInstruction">四指自然伸直、接近平行，拇指舒适展开。采集中不要转动或收起手掌。</p><p class="cal-caution">掌心尽量正对摄像头，每步准备 1 秒、保持采样 3 秒。不要求准确角度；对指由你确认轻触，不把视觉距离当接触证明。</p></div>
+      <div class="cal-progress"><div id="calSteps"></div><progress id="calProgress" max="1" value="0"></progress><p id="calMessage">先采集中立位、张开、钩手、指根轻弯，再采四个对指姿态</p><div class="cal-actions"><button id="calCapture" class="primary">采集当前姿态</button><button id="calCancel">取消采样</button><button id="calApply" disabled>应用并保存</button><button id="calToggle" disabled>标定前后对比</button><button id="calReset" class="quiet">重置标定</button></div></div></div>
+      <div class="footnote" id="pinchStatus">中立位用于校正四指偏斜；对指样本建立指尖对应关系。配置仅保存关键点与角度统计，不保存画面。模型若无法贴合，会显示剩余误差。</div>
+      <div class="footnote" id="humanStructure">完成八姿态标定后启用个人结构优化</div>
+    </section>
+    <section class="panel motion-panel"><div class="panel-head"><h2>标定后 · 动态一致性检查</h2><span>每组 10 秒</span></div><div class="cal-body"><p>先暂停并失能机械手，再恢复摄像头识别。张合检查：缓慢张开—握拳—张开三次；转掌检查：保持手形，小幅转掌和平移。只统计结果，不修改标定、不发送运动。</p><div class="cal-actions"><button id="checkOpenClose">开始张合检查</button><button id="checkPalm">开始转掌检查</button><button id="checkCancel">取消检查</button></div><p id="motionCheckResult">检查可用率和角度变化，不把低抖动当作真实角度准确。</p></div>
+    </section>
+    <section class="panel angles-panel"><div class="panel-head"><h2>四指 · 屈伸与侧摆</h2><span>人手估计 / 输出　单位：°</span></div><table><thead><tr><th>手指</th><th>侧摆估计</th><th>侧摆目标</th><th>MCP 估计</th><th>MCP 目标</th><th>PIP 估计</th><th>PIP 目标</th></tr></thead><tbody id="angles"></tbody></table><div class="footnote">连续姿态估计，无动作分类。新标定启用个人骨长拟合；中立位只校正侧摆，不扣除 MCP/PIP 弯曲，再经滤波和机器人限位输出。</div></section>
+    <section class="panel angles-panel thumb-panel"><div class="panel-head"><h2>拇指 · 运动学映射</h2><span id="thumbQuality">等待拇指数据</span></div><table><thead><tr><th>关节</th><th>估计目标</th><th>平滑输出</th><th>状态</th></tr></thead><tbody id="thumbAngles"></tbody></table><div class="footnote" id="partStatus">拇指根据骨段方向与指尖位置拟合官方模型，IP 按 URDF 随 MCP 联动。局部数据不可靠时保持对应关节，其余手指继续更新。</div></section>
+    <section class="panel" id="directThumbPanel" hidden>
+      <div class="panel-head"><h2>拇指 · 指尖深度与末端设置</h2><span>解析几何 · 无迭代拟合</span></div>
+      <div class="cal-body"><p>优先使用拇指指尖和根部的可靠深度定位，解析换算根部三个关节；指尖暂不可见时退回近端方向。机械手 j3 固定，j4 按官方模型与 j3 联动，因此这两个末端关节保持同一固定角度。</p>
+        <label for="thumbFixed">末端固定角度（°）</label> <input id="thumbFixed" type="number" value="12" step="1">
+        <button id="thumbFixedSave">保存固定角度</button><p id="thumbFixedMessage">先完成两步骨架标定；保存会暂停并请求失能，恢复后手动开始。</p>
+      </div>
+    </section>
+    <section class="panel" id="thumbCalibrationPanel">
+      <div class="panel-head"><h2 id="thumbCalTitle">拇指专项 · 连续运动标定</h2><span id="thumbCalMode">尚未采集</span></div>
+      <div class="cal-body"><div class="cal-guide">
+        <label for="thumbCalStep">专项动作</label><select id="thumbCalStep">
+          <option value="rest">1 · 自然放松</option><option value="plane">2 · 沿掌面展开与收回</option>
+          <option value="lift">3 · 向镜头抬起与回落</option><option value="flex">4 · 末端弯曲与伸直</option>
+          <option value="index">5 · 碰食指尖后返回</option><option value="middle">6 · 碰中指尖后返回</option>
+          <option value="ring">7 · 碰无名指尖后返回</option><option value="pinky">8 · 碰小指尖后返回</option>
+        </select><p id="thumbCalInstruction">掌心朝前，四指自然展开，拇指舒适放松；准备 2 秒后保持不动 4 秒。</p>
+        <p id="thumbCalHelp">复用已保存的八姿态基础标定。自然放松保持不动，其余每步准备 2 秒、采样 12 秒，缓慢往返 2–3 次。手掌保持朝前，只在舒适范围内运动。采集和应用均会暂停并失能机械手。</p>
+        <div id="thumbStaticReferences" hidden><p>对应机械手参考角度（°），可先看模型再调整；只改变预览，不发送机械手指令。</p>
+          <label>根部 j0 <input id="thumbRef0" type="number" step="0.5" style="width:75px"></label>
+          <label>j1 <input id="thumbRef1" type="number" step="0.5" style="width:75px"></label>
+          <label>j2 <input id="thumbRef2" type="number" step="0.5" style="width:75px"></label>
+          <button id="thumbCalPreview">查看 / 更新参考姿态</button><p id="thumbReferenceHint"></p>
+        </div>
+      </div><div class="cal-progress"><div id="thumbCalSteps"></div><progress id="thumbCalProgress" max="1" value="0"></progress>
+        <p id="thumbCalMessage">等待标定状态</p><div class="cal-actions">
+          <button id="thumbCalCapture" class="primary">采集当前动作</button><button id="thumbCalCancel" disabled>取消当前采样</button>
+          <button id="thumbCalApply" disabled>生成、应用并保存</button><button id="thumbCalToggle" disabled>停用专项参考</button><button id="thumbStaticReset" class="quiet" hidden>重置拇指静态标定</button>
+        </div></div></div>
+      <div class="footnote" id="thumbCalFootnote">单独保存拇指配置，基础标定不变。学习运动范围和几何姿态参考；超出采样范围时平滑退回原解算。没有机器人角度真值，不能消除所有深度漂移。应用后先恢复识别观察预览，再手动启动实机。</div>
+    </section>
+    <footer id="runtimeFooter">识别画面仅在本机传输，默认不录制；对照模式可手动录制本地测试视频。关闭页面后服务仍运行，点击“停止服务”释放摄像头；WiLoR 后端另用 Stop-HandCompare 停止。</footer>
+  </main>
+  <script type="module" src="/static/main.js"></script>
+</body></html>

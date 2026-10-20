@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+models/
+logs/
+.hf-cache/
+.python/
+wheels/

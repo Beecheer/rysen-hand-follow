@@ -1,0 +1,4 @@
+#thumbCalibrationPanel { margin: 18px 0; scroll-margin-top: 18px; }
+#thumbCalSteps { display: flex; flex-wrap: wrap; gap: 8px; font-size: 11px; color: #8d9eb4; }
+#thumbCalSteps span { padding: 5px 8px; border: 1px solid #344052; border-radius: 5px; }
+#thumbCalSteps .done { color: #82dfc3; border-color: #356151; }
