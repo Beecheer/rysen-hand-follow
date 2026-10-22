@@ -6,6 +6,10 @@
 
 当前一键实机入口默认使用 **B / WiLoR**，加载其独立八姿态标定。A / MediaPipe 可通过 `Start-HandFollow.ps1 -Tracker mediapipe -Restart` 回退。`Start-HandCompare.cmd` 仍为仅摄像头的 A/B 对照，不连接 SDK。
 
+## 演示视频
+
+[【根本没有这样的工程末端】](https://www.bilibili.com/video/BV1amJR6tEe2/?share_source=copy_web&vd_source=b2be945a77657353d02cfa6f7e5d15c4)
+
 **原 A/B 阶段已收尾。** 已保存 B 的八姿态基础标定及拇指专项参考。其功能、验证范围、已知问题和恢复步骤见 [阶段收尾说明](hand-tracking/docs/STAGE-CLOSEOUT.md)；新增 D435 工作及当前运行状态见 [D435 验证记录](hand-tracking/docs/D435-VALIDATION.md)。
 
 ## 日常使用
